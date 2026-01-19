@@ -1,4 +1,4 @@
-# MANUAL DE DESARROLLO
+# LIBRARYDA - MANUAL DE DESARROLLO
 
 ## Objetivo del Manual de Desarrollo
 Proveer guías claras y procedimientos estandarizados para el desarrollo del proyecto "LibraryDA", asegurando la calidad del código y el correcto uso de las herramientas de control de versiones.
