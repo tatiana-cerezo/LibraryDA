@@ -21,7 +21,7 @@ Cambios Realizados:
 - Implementación de entidades: Usuario, Libro, Préstamo.
 - CRUD completo de las tres entidades.
 - Configuración de Spring Security.
-- Integración de la base de datos MySQL con Hibernate.
+- Integración de la base de datos PostgreSQL con Hibernate.
 Autor: Tatiana Cerezo
 
 Versión 1.1.0

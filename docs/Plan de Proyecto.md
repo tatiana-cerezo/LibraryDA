@@ -38,7 +38,7 @@ El desarrollo del proyecto, consistente en la presentación de 5 hitos, se ha di
 -	Tecnológicos:  
     - Lenguajes: Java, HTML, CSS, JavaScript.  
     - Frameworks: Spring Boot, Thymeleaf.  
-    - Base de datos: MySQL.  
+    - Base de datos: PostgreSQL.  
     - Herramientas de gestión: GitHub, Trello.  
     - IDE: IntelliJ IDEA / VS Code.
 
@@ -61,6 +61,6 @@ El desarrollo del proyecto, consistente en la presentación de 5 hitos, se ha di
     - Se cuenta con conexión a Internet para acceder a GitHub y dependencias Maven. 
 
 -	Dependencias:  
-    - MySQL instalado y operativo.   
+    - PostgreSQL instalado y operativo.   
     - Acceso al repositorio GitHub.   
     - Disponibilidad de las librerías y dependencias de Spring Boot.
