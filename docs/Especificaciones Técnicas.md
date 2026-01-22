@@ -40,7 +40,7 @@ El sistema estará basado en una arquitectura cliente-servidor y seguirá el pat
 - internacionalización: i18n.
 
 *Base de datos:*
-- Motor: MySQL 8.0.
+- Motor: PostgreSQL 9.6.
 - ORM: Hibernate.
 
 *Herramientas:*
