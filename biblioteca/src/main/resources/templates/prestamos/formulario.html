@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Préstamo</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav>
+    <a href="/">Inicio</a>
+    <a href="/libros">Libros</a>
+    <a href="/usuarios">Usuarios</a>
+    <a href="/prestamos">Préstamos</a>
+</nav>
+<main>
+    <h1>Nuevo Préstamo</h1>
+
+    <form th:action="@{/prestamos/guardar}" method="post">
+
+        <label>Libro:</label>
+        <select name="libroId" required>
+            <option value="">Seleccionar libro</option>
+            <option th:each="libro : ${libros}" th:value="${libro.id}" th:text="${libro.titulo}"></option>
+        </select>
+
+        <label>Usuario:</label>
+        <select name="usuarioId" required>
+            <option value="">Seleccionar usuario</option>
+            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombre}"></option>
+        </select>
+
+        <label>Días de préstamo:</label>
+        <input type="number" name="diasPrestamo" value="14" required min="1">
+
+        <button type="submit">Guardar</button>
+        <a href="/prestamos">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>

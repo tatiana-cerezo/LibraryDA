@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Préstamos</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav>
+    <a href="/">Inicio</a>
+    <a href="/libros">Libros</a>
+    <a href="/usuarios">Usuarios</a>
+    <a href="/prestamos">Préstamos</a>
+</nav>
+<main>
+    <h1>Listado de Préstamos</h1>
+
+    <a th:href="@{/prestamos/nuevo}">Nuevo Préstamo</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Libro</th>
+            <th>Usuario</th>
+            <th>Fecha Préstamo</th>
+            <th>Fecha Devolución</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="prestamo : ${prestamos}">
+            <td th:text="${prestamo.id}"></td>
+            <td th:text="${prestamo.libro.titulo}"></td>
+            <td th:text="${prestamo.usuario.nombre}"></td>
+            <td th:text="${prestamo.fechaPrestamo}"></td>
+            <td th:text="${prestamo.fechaDevolucion}"></td>
+            <td th:text="${prestamo.estado}"></td>
+            <td>
+                <a th:if="${prestamo.estado.name() == 'ACTIVO'}" th:href="@{/prestamos/devolver/{id}(id=${prestamo.id})}">Devolver</a>
+                <a th:href="@{/prestamos/eliminar/{id}(id=${prestamo.id})}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
