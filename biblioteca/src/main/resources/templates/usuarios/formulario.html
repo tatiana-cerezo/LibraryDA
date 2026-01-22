@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav>
+    <a href="/">Inicio</a>
+    <a href="/libros">Libros</a>
+    <a href="/usuarios">Usuarios</a>
+    <a href="/prestamos">Préstamos</a>
+</nav>
+<main>
+    <h1 th:text="${usuario.id == null} ? 'Nuevo Usuario' : 'Editar Usuario'"></h1>
+
+    <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
+        <input type="hidden" th:field="*{id}">
+
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required>
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" required>
+
+        <label>Contraseña:</label>
+        <input type="password" th:field="*{password}" th:required="${usuario.id == null}">
+
+        <label>Rol:</label>
+        <select th:field="*{rol}" required>
+            <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol}"></option>
+        </select>
+
+        <button type="submit">Guardar</button>
+        <a href="/usuarios">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>

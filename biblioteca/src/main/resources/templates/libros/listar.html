@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libros</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav>
+    <a href="/">Inicio</a>
+    <a href="/libros">Libros</a>
+    <a href="/usuarios">Usuarios</a>
+    <a href="/prestamos">Préstamos</a>
+</nav>
+<main>
+    <h1>Listado de Libros</h1>
+
+    <a th:href="@{/libros/nuevo}">Nuevo Libro</a>
+
+    <form th:action="@{/libros/buscar}" method="get">
+        <input type="text" name="titulo" placeholder="Buscar por título">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Categoría</th>
+            <th>Copias</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="libro : ${libros}">
+            <td th:text="${libro.id}"></td>
+            <td th:text="${libro.titulo}"></td>
+            <td th:text="${libro.autor}"></td>
+            <td th:text="${libro.categoria}"></td>
+            <td th:text="${libro.copias}"></td>
+            <td>
+                <a th:href="@{/libros/editar/{id}(id=${libro.id})}">Editar</a>
+                <a th:href="@{/libros/eliminar/{id}(id=${libro.id})}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
