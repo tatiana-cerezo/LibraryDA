@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuario</title>
+    <title th:text="${usuario.id == null} ? #{usuarios.nuevo} : #{usuarios.editar}">Usuario</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1 th:text="${usuario.id == null} ? 'Nuevo Usuario' : 'Editar Usuario'"></h1>
+    <h1 th:text="${usuario.id == null} ? #{usuarios.nuevo} : #{usuarios.editar}"></h1>
 
     <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
         <input type="hidden" th:field="*{id}">
 
-        <label>Nombre:</label>
+        <label th:text="#{usuarios.nombre}">Nombre:</label>
         <input type="text" th:field="*{nombre}" required>
 
-        <label>Email:</label>
+        <label th:text="#{usuarios.email}">Email:</label>
         <input type="email" th:field="*{email}" required>
 
-        <label>Contraseña:</label>
+        <label th:text="#{usuarios.password}">Contraseña:</label>
         <input type="password" th:field="*{password}" th:required="${usuario.id == null}">
 
-        <label>Rol:</label>
+        <label th:text="#{usuarios.rol}">Rol:</label>
         <select th:field="*{rol}" required>
             <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol}"></option>
         </select>
 
-        <button type="submit">Guardar</button>
-        <a href="/usuarios">Cancelar</a>
+        <button type="submit" th:text="#{usuarios.btn.guardar}">Guardar</button>
+        <a href="/usuarios" th:text="#{usuarios.btn.cancelar}">Cancelar</a>
     </form>
 </main>
 </body>

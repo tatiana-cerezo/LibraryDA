@@ -3,37 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libro</title>
+    <title th:text="${libro.id == null} ? #{libros.nuevo} : #{libros.editar}">Libro</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1 th:text="${libro.id == null} ? 'Nuevo Libro' : 'Editar Libro'"></h1>
+    <h1 th:text="${libro.id == null} ? #{libros.nuevo} : #{libros.editar}"></h1>
 
     <form th:action="@{/libros/guardar}" th:object="${libro}" method="post">
         <input type="hidden" th:field="*{id}">
 
-        <label>Título:</label>
+        <label th:text="#{libros.titulo.campo}">Título:</label>
         <input type="text" th:field="*{titulo}" required>
 
-        <label>Autor:</label>
+        <label th:text="#{libros.autor}">Autor:</label>
         <input type="text" th:field="*{autor}" required>
 
-        <label>Editorial:</label>
+        <label th:text="#{libros.editorial}">Editorial:</label>
         <input type="text" th:field="*{editorial}">
 
-        <label>Año de Publicación:</label>
+        <label th:text="#{libros.anio}">Año de Publicación:</label>
         <input type="number" th:field="*{anioPublicacion}">
 
-        <label>Categoría:</label>
+        <label th:text="#{libros.categoria}">Categoría:</label>
         <input type="text" th:field="*{categoria}">
 
-        <label>Copias:</label>
+        <label th:text="#{libros.copias}">Copias:</label>
         <input type="number" th:field="*{copias}" required min="1">
 
-        <button type="submit">Guardar</button>
-        <a href="/libros">Cancelar</a>
+        <button type="submit" th:text="#{libros.btn.guardar}">Guardar</button>
+        <a href="/libros" th:text="#{libros.btn.cancelar}">Cancelar</a>
     </form>
 </main>
 </body>

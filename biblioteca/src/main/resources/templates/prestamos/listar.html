@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Préstamos</title>
+    <title th:text="#{prestamos.titulo}">Préstamos</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1>Listado de Préstamos</h1>
+    <h1 th:text="#{prestamos.titulo}">Listado de Préstamos</h1>
 
-    <a th:href="@{/prestamos/nuevo}">Nuevo Préstamo</a>
+    <a th:href="@{/prestamos/nuevo}" th:text="#{prestamos.nuevo}">Nuevo Préstamo</a>
 
     <table>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Libro</th>
-            <th>Usuario</th>
-            <th>Fecha Préstamo</th>
-            <th>Fecha Devolución</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th th:text="#{prestamos.id}">ID</th>
+            <th th:text="#{prestamos.libro}">Libro</th>
+            <th th:text="#{prestamos.usuario}">Usuario</th>
+            <th th:text="#{prestamos.fecha.prestamo}">Fecha Préstamo</th>
+            <th th:text="#{prestamos.fecha.devolucion}">Fecha Devolución</th>
+            <th th:text="#{prestamos.estado}">Estado</th>
+            <th th:text="#{prestamos.acciones}">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -34,8 +34,8 @@
             <td th:text="${prestamo.fechaDevolucion}"></td>
             <td th:text="${prestamo.estado}"></td>
             <td>
-                <a th:if="${prestamo.estado.name() == 'ACTIVO'}" th:href="@{/prestamos/devolver/{id}(id=${prestamo.id})}">Devolver</a>
-                <a th:href="@{/prestamos/eliminar/{id}(id=${prestamo.id})}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                <a th:if="${prestamo.estado.name() == 'ACTIVO'}" th:href="@{/prestamos/devolver/{id}(id=${prestamo.id})}" th:text="#{prestamos.btn.devolver}">Devolver</a>
+                <a th:href="@{/prestamos/eliminar/{id}(id=${prestamo.id})}" th:text="#{prestamos.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
             </td>
         </tr>
         </tbody>
