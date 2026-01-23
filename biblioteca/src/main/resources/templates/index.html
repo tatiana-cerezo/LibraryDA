@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca</title>
+    <title th:text="#{index.titulo}">Biblioteca</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1>Sistema de Gestión de Biblioteca</h1>
-    <p>Bienvenido al sistema de gestión de biblioteca.</p>
+    <h1 th:text="#{index.titulo}">Sistema de Gestión de Biblioteca</h1>
+    <p th:text="#{index.bienvenida}">Bienvenido al sistema de gestión de biblioteca.</p>
 
     <p sec:authorize="isAuthenticated()">
-        Usuario: <span sec:authentication="name"></span>
+        <span th:text="#{index.usuario}">Usuario</span>: <span sec:authentication="name"></span>
     </p>
 </main>
 </body>

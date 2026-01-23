@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Préstamo</title>
+    <title th:text="#{prestamos.nuevo}">Nuevo Préstamo</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1>Nuevo Préstamo</h1>
+    <h1 th:text="#{prestamos.nuevo}">Nuevo Préstamo</h1>
 
     <form th:action="@{/prestamos/guardar}" method="post">
 
-        <label>Libro:</label>
+        <label th:text="#{prestamos.libro}">Libro:</label>
         <select name="libroId" required>
-            <option value="">Seleccionar libro</option>
+            <option value="" th:text="#{prestamos.seleccionar.libro}">Seleccionar libro</option>
             <option th:each="libro : ${libros}" th:value="${libro.id}" th:text="${libro.titulo}"></option>
         </select>
 
-        <label>Usuario:</label>
+        <label th:text="#{prestamos.usuario}">Usuario:</label>
         <select name="usuarioId" required>
-            <option value="">Seleccionar usuario</option>
+            <option value="" th:text="#{prestamos.seleccionar.usuario}">Seleccionar usuario</option>
             <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombre}"></option>
         </select>
 
-        <label>Días de préstamo:</label>
+        <label th:text="#{prestamos.dias}">Días de préstamo:</label>
         <input type="number" name="diasPrestamo" value="14" required min="1">
 
-        <button type="submit">Guardar</button>
-        <a href="/prestamos">Cancelar</a>
+        <button type="submit" th:text="#{prestamos.btn.guardar}">Guardar</button>
+        <a href="/prestamos" th:text="#{prestamos.btn.cancelar}">Cancelar</a>
     </form>
 </main>
 </body>

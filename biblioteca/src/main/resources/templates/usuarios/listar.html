@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuarios</title>
+    <title th:text="#{usuarios.titulo}">Usuarios</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1>Listado de Usuarios</h1>
+    <h1 th:text="#{usuarios.titulo}">Listado de Usuarios</h1>
 
-    <a th:href="@{/usuarios/nuevo}">Nuevo Usuario</a>
+    <a th:href="@{/usuarios/nuevo}" th:text="#{usuarios.nuevo}">Nuevo Usuario</a>
 
     <table>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Acciones</th>
+            <th th:text="#{usuarios.id}">ID</th>
+            <th th:text="#{usuarios.nombre}">Nombre</th>
+            <th th:text="#{usuarios.email}">Email</th>
+            <th th:text="#{usuarios.rol}">Rol</th>
+            <th th:text="#{usuarios.acciones}">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -30,8 +30,8 @@
             <td th:text="${usuario.email}"></td>
             <td th:text="${usuario.rol}"></td>
             <td>
-                <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}">Editar</a>
-                <a th:href="@{/usuarios/eliminar/{id}(id=${usuario.id})}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}" th:text="#{usuarios.btn.editar}">Editar</a>
+                <a th:href="@{/usuarios/eliminar/{id}(id=${usuario.id})}" th:text="#{usuarios.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
             </td>
         </tr>
         </tbody>

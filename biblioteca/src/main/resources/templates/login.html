@@ -3,32 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title th:text="#{login.titulo}">Login</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <nav>
-    <a href="/">Inicio</a>
+    <a href="/" th:text="#{nav.inicio}">Inicio</a>
+        <span style="margin-left: 1rem;">
+        <a th:href="@{/login(lang='es')}">ES</a> |
+        <a th:href="@{/login(lang='en')}">EN</a>
+    </span>
 </nav>
 <main>
-    <h1>Iniciar Sesión</h1>
+    <h1 th:text="#{login.titulo}">Iniciar Sesión</h1>
 
-    <div th:if="${param.error}" style="color: red; margin-bottom: 1rem;">
+    <div th:if="${param.error}" style="color: red; margin-bottom: 1rem;" th:text="#{login.error}">
         Usuario o contraseña incorrectos
     </div>
 
-    <div th:if="${param.logout}" style="color: green; margin-bottom: 1rem;">
+    <div th:if="${param.logout}" style="color: green; margin-bottom: 1rem;" th:text="#{login.logout}">
         Sesión cerrada correctamente
     </div>
 
     <form th:action="@{/login}" method="post">
-        <label>Email:</label>
+        <label th:text="#{login.email}">Email:</label>
         <input type="email" name="username" required>
 
-        <label>Contraseña:</label>
+        <label th:text="#{login.password}">Contraseña:</label>
         <input type="password" name="password" required>
 
-        <button type="submit">Entrar</button>
+        <button type="submit" th:text="#{login.entrar}">Entrar</button>
     </form>
 </main>
 </body>
