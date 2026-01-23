@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,14 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<nav>
-    <a href="/">Inicio</a>
-    <a href="/libros">Libros</a>
-    <a href="/usuarios">Usuarios</a>
-    <a href="/prestamos">Préstamos</a>
-</nav>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
     <h1>Sistema de Gestión de Biblioteca</h1>
     <p>Bienvenido al sistema de gestión de biblioteca.</p>
+
+    <p sec:authorize="isAuthenticated()">
+        Usuario: <span sec:authentication="name"></span>
+    </p>
 </main>
 </body>
 </html>
