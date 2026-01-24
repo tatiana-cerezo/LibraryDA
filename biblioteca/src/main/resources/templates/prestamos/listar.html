@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +35,7 @@
             <td th:text="${prestamo.estado}"></td>
             <td>
                 <a th:if="${prestamo.estado.name() == 'ACTIVO'}" th:href="@{/prestamos/devolver/{id}(id=${prestamo.id})}" th:text="#{prestamos.btn.devolver}">Devolver</a>
-                <a th:href="@{/prestamos/eliminar/{id}(id=${prestamo.id})}" th:text="#{prestamos.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/prestamos/eliminar/{id}(id=${prestamo.id})}" th:text="#{prestamos.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
             </td>
         </tr>
         </tbody>
