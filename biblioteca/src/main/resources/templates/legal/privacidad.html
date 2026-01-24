@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{privacidad.titulo}">Política de Privacidad</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+<main>
+    <h1 th:text="#{privacidad.titulo}">Política de Privacidad</h1>
+
+    <p th:text="#{privacidad.contenido}"></p>
+
+    <h2 th:text="#{privacidad.datos}">Datos recopilados</h2>
+    <p th:text="#{privacidad.datos.texto}"></p>
+
+    <h2 th:text="#{privacidad.uso}">Uso de los datos</h2>
+    <p th:text="#{privacidad.uso.texto}"></p>
+
+    <h2 th:text="#{privacidad.derechos}">Derechos</h2>
+    <p th:text="#{privacidad.derechos.texto}"></p>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

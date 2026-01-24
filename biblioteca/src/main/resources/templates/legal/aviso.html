@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{legal.titulo}">Aviso Legal</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+<main>
+    <h1 th:text="#{legal.titulo}">Aviso Legal</h1>
+
+    <p th:text="#{legal.contenido}"></p>
+
+    <h2 th:text="#{legal.titular}">Titular</h2>
+    <p th:text="#{legal.titular.texto}"></p>
+
+    <h2 th:text="#{legal.contacto}">Contacto</h2>
+    <p th:text="#{legal.contacto.texto}"></p>
+
+    <h2 th:text="#{legal.proposito}">Propósito</h2>
+    <p th:text="#{legal.proposito.texto}"></p>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

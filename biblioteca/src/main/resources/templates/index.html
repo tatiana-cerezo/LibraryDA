@@ -16,5 +16,8 @@
         <span th:text="#{index.usuario}">Usuario</span>: <span sec:authentication="name"></span>
     </p>
 </main>
+<div th:replace="~{fragments/cookies :: cookies}"></div>
+<script th:replace="~{fragments/cookies :: cookies-script}"></script>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
