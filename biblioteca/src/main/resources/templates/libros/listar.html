@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
 <main>
     <h1 th:text="#{libros.titulo}">Listado de Libros</h1>
 
-    <a th:href="@{/libros/nuevo}" th:text="#{libros.nuevo}">Nuevo Libro</a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/nuevo}" th:text="#{libros.nuevo}">Nuevo Libro</a>
 
     <form th:action="@{/libros/buscar}" method="get">
         <input type="text" name="titulo" th:placeholder="#{libros.buscar}">
@@ -37,8 +37,8 @@
             <td th:text="${libro.categoria}"></td>
             <td th:text="${libro.copias}"></td>
             <td>
-                <a th:href="@{/libros/editar/{id}(id=${libro.id})}" th:text="#{libros.btn.editar}">Editar</a>
-                <a th:href="@{/libros/eliminar/{id}(id=${libro.id})}" th:text="#{libros.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/editar/{id}(id=${libro.id})}" th:text="#{libros.btn.editar}">Editar</a>
+                <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/eliminar/{id}(id=${libro.id})}" th:text="#{libros.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
             </td>
         </tr>
         </tbody>
