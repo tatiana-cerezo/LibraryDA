@@ -56,4 +56,11 @@ public class LibroService {
         }
         return 0;
     }
+
+    public List<Libro> findDisponibles() {
+        List<Libro> todos = libroRepository.findAll();
+        return todos.stream()
+                .filter(libro -> getDisponibles(libro.getId()) > 0)
+                .toList();
+    }
 }
