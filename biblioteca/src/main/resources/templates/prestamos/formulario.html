@@ -11,7 +11,12 @@
 <main>
     <h1 th:text="#{prestamos.nuevo}">Nuevo Préstamo</h1>
 
-    <form th:action="@{/prestamos/guardar}" method="post">
+    <div th:if="${#lists.isEmpty(libros)}" style="color: orange; margin-bottom: 1rem;">
+        <p th:text="#{prestamos.sin.libros}">No hay libros disponibles.</p>
+        <a href="/prestamos" th:text="#{prestamos.btn.cancelar}">Volver</a>
+    </div>
+
+    <form th:unless="${#lists.isEmpty(libros)}" th:action="@{/prestamos/guardar}" method="post">
 
         <label th:text="#{prestamos.libro}">Libro:</label>
         <select name="libroId" required>

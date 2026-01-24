@@ -46,7 +46,7 @@ public class PrestamoController {
     public String mostrarFormularioNuevo(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Optional<Usuario> usuario = usuarioService.findByEmail(userDetails.getUsername());
 
-        model.addAttribute("libros", libroService.findAll());
+        model.addAttribute("libros", libroService.findDisponibles());
 
         if (usuario.isPresent() && usuario.get().getRol().name().equals("ADMIN")) {
             model.addAttribute("usuarios", usuarioService.findAll());
