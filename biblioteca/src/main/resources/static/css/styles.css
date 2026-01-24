@@ -132,3 +132,39 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.cookie-banner p {
+    margin: 0;
+}
+
+.cookie-banner a {
+    color: #ddd;
+}
+
+.cookie-banner button {
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.cookie-banner button:hover {
+    background-color: #45a049;
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="cookies" id="cookie-banner" class="cookie-banner">
+    <p th:text="#{cookies.mensaje}">Este sitio utiliza cookies para mejorar la experiencia de usuario.</p>
+    <a href="/privacidad" th:text="#{cookies.mas.info}">Más información</a>
+    <button onclick="aceptarCookies()" th:text="#{cookies.aceptar}">Aceptar</button>
+</div>
+
+<script th:fragment="cookies-script">
+    function aceptarCookies() {
+        document.getElementById('cookie-banner').style.display = 'none';
+        localStorage.setItem('cookiesAceptadas', 'true');
+    }
+
+    if (localStorage.getItem('cookiesAceptadas') === 'true') {
+        document.getElementById('cookie-banner').style.display = 'none';
+    }
+</script>
+</body>
+</html>
