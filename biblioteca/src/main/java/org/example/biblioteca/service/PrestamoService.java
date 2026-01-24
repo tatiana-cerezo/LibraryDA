@@ -50,7 +50,20 @@ public class PrestamoService {
         return prestamos;
     }
 
+    public int contarPrestamosActivos(Long libroId) {
+        return prestamoRepository.findByLibroIdAndEstado(libroId, EstadoPrestamo.ACTIVO).size();
+    }
+
+    public boolean hayCopiasDisponibles(Libro libro) {
+        int prestamosActivos = contarPrestamosActivos(libro.getId());
+        return libro.getCopias() > prestamosActivos;
+    }
+
     public Prestamo crear(Libro libro, Usuario usuario, LocalDate fechaDevolucion) {
+        if (!hayCopiasDisponibles(libro)) {
+            return null;
+        }
+
         Prestamo prestamo = new Prestamo();
         prestamo.setLibro(libro);
         prestamo.setUsuario(usuario);
@@ -91,4 +104,5 @@ public class PrestamoService {
             prestamoRepository.save(prestamo);
         }
     }
+
 }

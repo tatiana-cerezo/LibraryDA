@@ -19,11 +19,18 @@
             <option th:each="libro : ${libros}" th:value="${libro.id}" th:text="${libro.titulo}"></option>
         </select>
 
-        <label th:text="#{prestamos.usuario}">Usuario:</label>
-        <select name="usuarioId" required>
-            <option value="" th:text="#{prestamos.seleccionar.usuario}">Seleccionar usuario</option>
-            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombre}"></option>
-        </select>
+        <th:block th:if="${esAdmin}">
+            <label th:text="#{prestamos.usuario}">Usuario:</label>
+            <select name="usuarioId" required>
+                <option value="" th:text="#{prestamos.seleccionar.usuario}">Seleccionar usuario</option>
+                <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombre}"></option>
+            </select>
+        </th:block>
+
+        <th:block th:unless="${esAdmin}">
+            <label th:text="#{prestamos.usuario}">Usuario:</label>
+            <input type="text" th:value="${usuarioActual.nombre}" disabled>
+        </th:block>
 
         <label th:text="#{prestamos.dias}">Días de préstamo:</label>
         <input type="number" name="diasPrestamo" value="14" required min="1">
