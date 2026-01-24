@@ -115,3 +115,20 @@ form a {
     text-align: center;
     color: #666;
 }
+
+footer {
+    margin-top: 2rem;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+footer a {
+    color: #666;
+    text-decoration: none;
+    margin: 0 0.5rem;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
