@@ -10,9 +10,21 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
+/**
+ * Configuración web para la internacionalización (i18n).
+ * <p>
+ * Define el locale por defecto y permite cambiar el idioma
+ * mediante un parámetro en la URL.
+ */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    /**
+     * Resuelve el locale usando la sesión HTTP.
+     * Por defecto se establece el idioma español.
+     *
+     * @return resolvedor de locale
+     */
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver resolver = new SessionLocaleResolver();
@@ -20,6 +32,12 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 
+    /**
+     * Interceptor que permite cambiar el idioma mediante
+     * el parámetro "lang" en la URL.
+     *
+     * @return interceptor de cambio de locale
+     */
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
@@ -27,6 +45,11 @@ public class WebConfig implements WebMvcConfigurer {
         return interceptor;
     }
 
+    /**
+     * Registra el interceptor de cambio de idioma.
+     *
+     * @param registry registro de interceptores
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());

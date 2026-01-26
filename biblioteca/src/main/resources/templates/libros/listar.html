@@ -10,7 +10,7 @@
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
     <h1 th:text="#{libros.titulo}">Listado de Libros</h1>
-
+    <!-- Mostrar solo si el usuario está autenticado -->
     <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/nuevo}" th:text="#{libros.nuevo}">Nuevo Libro</a>
 
     <form th:action="@{/libros/buscar}" method="get">
@@ -37,6 +37,7 @@
             <td th:text="${libro.categoria}"></td>
             <td th:text="${libro.copias}"></td>
             <td>
+                <!-- Mostrar solo si el usuario está autenticado -->
                 <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/editar/{id}(id=${libro.id})}" th:text="#{libros.btn.editar}">Editar</a>
                 <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/eliminar/{id}(id=${libro.id})}" th:text="#{libros.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
             </td>

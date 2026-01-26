@@ -3,32 +3,44 @@ package org.example.biblioteca.model;
 import jakarta.persistence.*;
 import java.util.List;
 
+/**
+ * Entidad que representa un usuario del sistema de biblioteca.
+ * Los usuarios pueden tener rol ADMIN o USER y realizar préstamos de libros.
+ *
+ * @author Tatiana Cerezo
+ * @version 1.0
+ */
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
 
+    /** Identificador único del usuario */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /** Nombre completo del usuario */
     @Column(nullable = false)
     private String nombre;
 
+    /** Email del usuario, usado para autenticación */
     @Column(nullable = false, unique = true)
     private String email;
 
+    /** Contraseña encriptada del usuario */
     @Column(nullable = false)
     private String password;
 
+    /** Rol del usuario en el sistema */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Rol rol;
 
+    /** Lista de préstamos realizados por el usuario */
     @OneToMany(mappedBy = "usuario")
     private List<Prestamo> prestamos;
 
     public Usuario() {}
-
 
     public Long getId() {
         return id;

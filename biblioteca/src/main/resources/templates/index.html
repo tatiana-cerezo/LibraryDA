@@ -11,7 +11,7 @@
 <main>
     <h1 th:text="#{index.titulo}">Sistema de Gestión de Biblioteca</h1>
     <p th:text="#{index.bienvenida}">Bienvenido al sistema de gestión de biblioteca.</p>
-
+    <!-- Mostrar solo si el usuario está autenticado -->
     <p sec:authorize="isAuthenticated()">
         <span th:text="#{index.usuario}">Usuario</span>: <span sec:authentication="name"></span>
     </p>
