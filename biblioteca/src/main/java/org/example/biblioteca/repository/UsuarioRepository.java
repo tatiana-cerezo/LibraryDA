@@ -6,6 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Repositorio para gestionar operaciones de persistencia de usuarios.
+ * Extiende JpaRepository para operaciones CRUD básicas.
+ *
+ * @author Tatiana Cerezo
+ * @version 1.0
+ */
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
