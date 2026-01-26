@@ -8,22 +8,47 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
+/**
+ * Configuración de seguridad de la aplicación.
+ * <p>
+ * Define la autenticación, autorización, login, logout
+ * y el uso de un {@link UserDetailsService} personalizado.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /** Servicio personalizado de usuarios para Spring Security */
     private final CustomUserDetailsService userDetailsService;
 
+    /**
+     * Constructor con inyección de dependencias.
+     *
+     * @param userDetailsService servicio de detalles de usuario
+     */
     public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Define el codificador de contraseñas.
+     *
+     * @return codificador BCrypt
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configura la cadena de filtros de seguridad.
+     *
+     * @param http configuración HTTP de Spring Security
+     * @return cadena de filtros configurada
+     * @throws Exception en caso de error de configuración
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
