@@ -11,6 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+/**
+ * Implementación personalizada de {@link UserDetailsService} para Spring Security.
+ * <p>
+ * Se encarga de cargar los datos de autenticación del usuario a partir
+ * de su email, adaptando la entidad {@link Usuario} al modelo de seguridad
+ * de Spring.
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
