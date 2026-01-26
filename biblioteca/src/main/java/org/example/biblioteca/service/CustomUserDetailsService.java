@@ -21,12 +21,25 @@ import java.util.Collections;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    /** Repositorio para acceder a los usuarios */
     private final UsuarioRepository usuarioRepository;
 
+    /**
+     * Constructor con inyección de dependencias.
+     *
+     * @param usuarioRepository repositorio de usuarios
+     */
     public CustomUserDetailsService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Carga un usuario por su email para el proceso de autenticación.
+     *
+     * @param email email del usuario
+     * @return detalles del usuario para Spring Security
+     * @throws UsernameNotFoundException si el usuario no existe
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByEmail(email)
