@@ -58,10 +58,10 @@ public class PrestamoController {
     public String listar(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Optional<Usuario> usuario = usuarioService.findByEmail(userDetails.getUsername());
 
-        if (usuario.isPresent() && usuario.get().getRol().name().equals("ADMIN")) {
-            model.addAttribute("prestamos", prestamoService.findAll());
-        } else if (usuario.isPresent()) {
-            model.addAttribute("prestamos", prestamoService.findByUsuarioId(usuario.get().getId()));
+        if (usuario.isPresent()) {
+            Long usuarioId = usuario.get().getRol().name().equals("ADMIN") ? null : usuario.get().getId();
+            model.addAttribute("prestamosActivos", prestamoService.findActivosYVencidosOrdenados(usuarioId));
+            model.addAttribute("prestamosDevueltos", prestamoService.findDevueltosOrdenados(usuarioId));
         }
 
         return "prestamos/listar";

@@ -1,23 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{prestamos.titulo}">Préstamos</title>
-    <link rel="stylesheet" href="/css/styles.css">
-</head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
-<nav th:replace="~{fragments/nav :: nav}"></nav>
-<main>
-    <h1 th:text="#{prestamos.titulo}">Listado de Préstamos</h1>
-
-    <a th:href="@{/prestamos/nuevo}" th:text="#{prestamos.nuevo}">Nuevo Préstamo</a>
-
-    <h2 th:text="#{prestamos.activos}">Préstamos Activos o Vencidos</h2>
-    <div th:replace="~{fragments/prestamos-activos-vencidos :: tabla-activos}"></div>
-
-    <h2 th:text="#{prestamos.devueltos}">Préstamos Devueltos</h2>
-    <table th:if="${!#lists.isEmpty(prestamosDevueltos)}">
+<div th:fragment="tabla-activos">
+    <table th:if="${!#lists.isEmpty(prestamosActivos)}">
         <thead>
         <tr>
             <th th:text="#{prestamos.id}">ID</th>
@@ -30,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="prestamo : ${prestamosDevueltos}">
+        <tr th:each="prestamo : ${prestamosActivos}" th:class="${prestamo.estado.name() == 'VENCIDO'} ? 'vencido' : ''">
             <td th:text="${prestamo.id}"></td>
             <td th:text="${prestamo.libro.titulo}"></td>
             <td th:text="${prestamo.usuario.nombre}"></td>
@@ -38,13 +23,13 @@
             <td th:text="${prestamo.fechaDevolucion}"></td>
             <td th:text="${prestamo.estado}"></td>
             <td sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/prestamos/devolver/{id}(id=${prestamo.id})}" th:text="#{prestamos.btn.devolver}">Devolver</a>
                 <a th:href="@{/prestamos/eliminar/{id}(id=${prestamo.id})}" th:text="#{prestamos.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <p th:if="${#lists.isEmpty(prestamosDevueltos)}" th:text="#{prestamos.sin.devueltos}">No hay préstamos devueltos.</p>
-</main>
-<footer th:replace="~{fragments/footer :: footer}"></footer>
+    <p th:if="${#lists.isEmpty(prestamosActivos)}" th:text="#{prestamos.sin.activos}">No hay préstamos activos o vencidos.</p>
+</div>
 </body>
 </html>

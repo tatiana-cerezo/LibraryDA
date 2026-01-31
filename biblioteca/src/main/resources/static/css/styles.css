@@ -168,3 +168,7 @@ footer a:hover {
 .cookie-banner button:hover {
     background-color: #45a049;
 }
+
+tr.vencido {
+    background-color: #ffcccc;
+}
