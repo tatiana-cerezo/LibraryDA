@@ -15,6 +15,10 @@
     <p sec:authorize="isAuthenticated()">
         <span th:text="#{index.usuario}">Usuario</span>: <span sec:authentication="name"></span>
     </p>
+    <div sec:authorize="hasRole('USER')">
+        <h2 th:text="#{prestamos.activos}">Préstamos Activos</h2>
+        <div th:replace="~{fragments/prestamos-activos-vencidos :: tabla-activos}"></div>
+    </div>
 </main>
 <div th:replace="~{fragments/cookies :: cookies}"></div>
 <script th:replace="~{fragments/cookies :: cookies-script}"></script>
