@@ -95,6 +95,47 @@ public class PrestamoService {
     }
 
     /**
+     * Obtiene préstamos activos y vencidos ordenados.
+     * Vencidos primero (ordenados por fecha de devolución), luego activos (ordenados por fecha de devolución).
+     *
+     * @param usuarioId ID del usuario (null para todos)
+     * @return lista de préstamos ordenados
+     */
+    public List<Prestamo> findActivosYVencidosOrdenados(Long usuarioId) {
+        List<Prestamo> prestamos = (usuarioId == null)
+                ? prestamoRepository.findAll()
+                : prestamoRepository.findByUsuarioId(usuarioId);
+        actualizarVencidos(prestamos);
+
+        return prestamos.stream()
+                .filter(p -> p.getEstado() == EstadoPrestamo.ACTIVO || p.getEstado() == EstadoPrestamo.VENCIDO)
+                .sorted((p1, p2) -> {
+                    if (p1.getEstado() != p2.getEstado()) {
+                        return p1.getEstado() == EstadoPrestamo.VENCIDO ? -1 : 1;
+                    }
+                    return p1.getFechaDevolucion().compareTo(p2.getFechaDevolucion());
+                })
+                .toList();
+    }
+
+    /**
+     * Obtiene préstamos devueltos ordenados por fecha de devolución descendente.
+     *
+     * @param usuarioId ID del usuario (null para todos)
+     * @return lista de préstamos devueltos ordenados
+     */
+    public List<Prestamo> findDevueltosOrdenados(Long usuarioId) {
+        List<Prestamo> prestamos = (usuarioId == null)
+                ? prestamoRepository.findByEstado(EstadoPrestamo.DEVUELTO)
+                : prestamoRepository.findByUsuarioId(usuarioId);
+
+        return prestamos.stream()
+                .filter(p -> p.getEstado() == EstadoPrestamo.DEVUELTO)
+                .sorted((p1, p2) -> p2.getFechaDevolucion().compareTo(p1.getFechaDevolucion()))
+                .toList();
+    }
+
+    /**
      * Cuenta los préstamos activos de un libro.
      *
      * @param libroId identificador del libro
