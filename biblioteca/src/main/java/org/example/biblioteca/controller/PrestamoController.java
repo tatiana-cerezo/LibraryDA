@@ -19,6 +19,9 @@ import java.util.Optional;
  * <p>
  * Maneja las peticiones web relacionadas con el listado, creación,
  * edición y eliminación de préstamos.
+ *
+ *  @author Tatiana Cerezo
+ *  @version 1.1
  */
 @Controller
 @RequestMapping("/prestamos")

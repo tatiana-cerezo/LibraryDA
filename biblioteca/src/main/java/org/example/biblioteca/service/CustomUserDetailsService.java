@@ -17,6 +17,9 @@ import java.util.Collections;
  * Se encarga de cargar los datos de autenticación del usuario a partir
  * de su email, adaptando la entidad {@link Usuario} al modelo de seguridad
  * de Spring.
+ *
+ *  @author Tatiana Cerezo
+ *  @version 1.0
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

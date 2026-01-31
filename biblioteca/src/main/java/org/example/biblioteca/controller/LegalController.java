@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
  * Controlador de la página de contenido legal.
  * <p>
  * Gestiona el acceso a la página de legal.
+ *
+ *  @author Tatiana Cerezo
+ *  @version 1.0
  */
 @Controller
 public class LegalController {
