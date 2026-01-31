@@ -1,5 +1,6 @@
 package org.example.biblioteca.controller;
 
+import org.example.biblioteca.model.Libro;
 import org.example.biblioteca.model.Usuario;
 import org.example.biblioteca.service.LibroService;
 import org.example.biblioteca.service.PrestamoService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,7 +23,7 @@ import java.util.Optional;
  * edición y eliminación de préstamos.
  *
  *  @author Tatiana Cerezo
- *  @version 1.1
+ *  @version 1.2
  */
 @Controller
 @RequestMapping("/prestamos")
@@ -81,10 +83,29 @@ public class PrestamoController {
      * @return vista del formulario de préstamo
      */
     @GetMapping("/nuevo")
-    public String mostrarFormularioNuevo(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String mostrarFormularioNuevo(Model model,
+                                         @AuthenticationPrincipal UserDetails userDetails,
+                                         @RequestParam(required = false) String titulo,
+                                         @RequestParam(required = false) Long libroId) {
         Optional<Usuario> usuario = usuarioService.findByEmail(userDetails.getUsername());
 
-        model.addAttribute("libros", libroService.findDisponibles());
+        List<Libro> libros = List.of();
+        if (libroId == null) {
+            libros = (titulo != null && !titulo.isBlank())
+                    ? libroService.findByTitulo(titulo).stream()
+                    .filter(l -> libroService.getDisponibles(l.getId()) > 0)
+                    .toList()
+                    : List.of();
+        } else {
+            libroService.findById(libroId).ifPresent(l -> model.addAttribute("libroSeleccionado", l));
+        }
+
+        model.addAttribute("busquedaRealizada", titulo != null && !titulo.isBlank());
+
+        model.addAttribute("hayLibrosDisponibles", !libroService.findDisponibles().isEmpty());
+
+        model.addAttribute("libros", libros);
+        model.addAttribute("tituloBuscado", titulo);
 
         if (usuario.isPresent() && usuario.get().getRol().name().equals("ADMIN")) {
             model.addAttribute("usuarios", usuarioService.findAll());

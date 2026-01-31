@@ -11,20 +11,42 @@
 <main>
     <h1 th:text="#{prestamos.nuevo}">Nuevo Préstamo</h1>
 
-    <!-- Mostrar solo si no hay libros -->
-    <div th:if="${#lists.isEmpty(libros)}" style="color: orange; margin-bottom: 1rem;">
-        <p th:text="#{prestamos.sin.libros}">No hay libros disponibles.</p>
-        <a href="/prestamos" th:text="#{prestamos.btn.cancelar}">Volver</a>
+    <div th:if="${libroSeleccionado == null}">
+        <div th:if="${!hayLibrosDisponibles}" style="color: orange; margin-bottom: 1rem;">
+            <p th:text="#{prestamos.sin.libros}">No hay libros disponibles.</p>
+        </div>
+
+        <div th:if="${hayLibrosDisponibles}">
+            <label th:text="#{prestamos.libro}">Libro:</label>
+            <form th:action="@{/prestamos/nuevo}" method="get">
+                <input type="text" name="titulo" placeholder="Buscar libro">
+                <button type="submit" th:text="#{libros.btn.buscar}">Buscar</button>
+            </form>
+
+            <div th:if="${busquedaRealizada}" class="resultados-busqueda">
+                <p th:text="#{prestamos.busqueda} + '' + ${tituloBuscado} + '. Hemos encontrado los siguientes resultados:'"></p>
+                <p th:if="${#lists.isEmpty(libros)}" th:text="#{prestamos.sin.resultados}">No se encontraron resultados.</p>
+                <ul th:unless="${#lists.isEmpty(libros)}" class="lista-libros">
+                    <li th:each="libro : ${libros}">
+                        <a th:href="@{/prestamos/nuevo(libroId=${libro.id})}" th:text="${libro.titulo}" class="libro-item"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <a href="/prestamos" th:text="#{prestamos.btn.cancelar}">Cancelar</a>
     </div>
 
-    <!-- Mostrar solo si hay libros -->
-    <form th:unless="${#lists.isEmpty(libros)}" th:action="@{/prestamos/guardar}" method="post">
 
-        <label th:text="#{prestamos.libro}">Libro:</label>
-        <select name="libroId" required>
-            <option value="" th:text="#{prestamos.seleccionar.libro}">Seleccionar libro</option>
-            <option th:each="libro : ${libros}" th:value="${libro.id}" th:text="${libro.titulo}"></option>
-        </select>
+    <!-- Mostrar solo si hay libro seleccionado -->
+    <form th:if="${libroSeleccionado != null}" th:action="@{/prestamos/guardar}" method="post">
+
+        <p>
+            Libro seleccionado:
+            <strong th:text="${libroSeleccionado.titulo}"></strong>
+        </p>
+
+        <input type="hidden" name="libroId" th:value="${libroSeleccionado.id}">
 
         <!-- Mostrar solo si es ADMIN -->
         <th:block th:if="${esAdmin}">
