@@ -12,6 +12,9 @@ import java.util.Optional;
  * <p>
  * Proporciona operaciones CRUD y consultas básicas relacionadas
  * con los usuarios del sistema.
+ *
+ *  @author Tatiana Cerezo
+ *  @version 1.0
  */
 @Service
 public class UsuarioService {

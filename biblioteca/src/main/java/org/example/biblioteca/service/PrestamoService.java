@@ -18,7 +18,7 @@ import java.util.Optional;
  * de préstamos, así como la actualización automática de préstamos vencidos.
  *
  * @author Tatiana Cerezo
- * @version 1.0
+ * @version 1.1
  */
 @Service
 public class PrestamoService {

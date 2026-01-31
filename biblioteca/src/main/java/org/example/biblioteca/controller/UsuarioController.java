@@ -15,6 +15,9 @@ import java.util.Optional;
  * <p>
  * Maneja las peticiones web relacionadas con el listado, creación,
  * edición y eliminación de usuarios.
+ *
+ *  @author Tatiana Cerezo
+ *  @version 1.0
  */
 @Controller
 @RequestMapping("/usuarios")
