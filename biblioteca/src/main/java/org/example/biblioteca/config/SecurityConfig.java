@@ -15,6 +15,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * <p>
  * Define la autenticación, autorización, login, logout
  * y el uso de un {@link UserDetailsService} personalizado.
+ *
+ *  @author Tatiana Cerezo
+ *  @version 1.1
+ *
  */
 @Configuration
 @EnableWebSecurity
@@ -53,7 +57,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/login/**", "/legal", "/privacidad").permitAll()
+                        .requestMatchers("/css/**", "/login/**", "/legal", "/privacidad", "/registro/**").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/usuarios/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

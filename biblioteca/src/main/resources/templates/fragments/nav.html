@@ -18,6 +18,7 @@
     </span>
     <!-- Mostrar solo si el usuario no está autenticado -->
     <a sec:authorize="!isAuthenticated()" href="/login" th:text="#{nav.login}">Iniciar Sesión</a>
+    <a sec:authorize="!isAuthenticated()" href="/registro" th:text="#{nav.registro}">Registrarse</a>
     <span style="margin-left: 1rem;">
         <a href="?lang=es">ES</a> |
         <a href="?lang=en">EN</a>
