@@ -1,6 +1,9 @@
 package org.example.biblioteca.service;
 
+import org.example.biblioteca.model.EstadoPrestamo;
+import org.example.biblioteca.model.Prestamo;
 import org.example.biblioteca.model.Usuario;
+import org.example.biblioteca.repository.PrestamoRepository;
 import org.example.biblioteca.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +17,7 @@ import java.util.Optional;
  * con los usuarios del sistema.
  *
  *  @author Tatiana Cerezo
- *  @version 1.0
+ *  @version 1.1
  */
 @Service
 public class UsuarioService {
@@ -87,5 +90,52 @@ public class UsuarioService {
      */
     public boolean existsByEmail(String email) {
         return usuarioRepository.existsByEmail(email);
+    }
+
+    /**
+     * Verifica si un usuario puede ser eliminado.
+     * Solo puede eliminarse si no tiene préstamos activos o vencidos.
+     *
+     * @param usuarioId ID del usuario
+     * @return true si puede eliminarse
+     */
+    public boolean puedeEliminarse(Long usuarioId) {
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+        if (usuario.isEmpty()) {
+            return false;
+        }
+
+        List<Prestamo> prestamos = usuario.get().getPrestamos();
+        if (prestamos == null) {
+            return true;
+        }
+
+        return prestamos.stream()
+                .noneMatch(p -> p.getEstado() == EstadoPrestamo.ACTIVO || p.getEstado() == EstadoPrestamo.VENCIDO);
+    }
+
+    /**
+     * Elimina un usuario y sus préstamos devueltos asociados.
+     *
+     * @param id ID del usuario a eliminar
+     * @param prestamoRepository repositorio de préstamos
+     * @return true si se eliminó correctamente
+     */
+    public boolean eliminarConPrestamos(Long id, PrestamoRepository prestamoRepository) {
+        if (!puedeEliminarse(id)) {
+            return false;
+        }
+
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        if (usuario.isPresent() && usuario.get().getPrestamos() != null) {
+            for (Prestamo p : usuario.get().getPrestamos()) {
+                if (p.getEstado() == EstadoPrestamo.DEVUELTO) {
+                    prestamoRepository.deleteById(p.getId());
+                }
+            }
+        }
+
+        usuarioRepository.deleteById(id);
+        return true;
     }
 }

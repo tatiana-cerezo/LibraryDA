@@ -10,6 +10,10 @@
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
     <h1 th:text="#{libros.titulo}">Listado de Libros</h1>
+
+    <div th:if="${mensaje}" class="mensaje-exito" th:text="#{__${mensaje}__}"></div>
+    <div th:if="${error}" class="mensaje-error" th:text="#{__${error}__}"></div>
+
     <!-- Mostrar solo si el usuario está autenticado -->
     <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/nuevo}" th:text="#{libros.nuevo}">Nuevo Libro</a>
 
@@ -26,7 +30,7 @@
             <th th:text="#{libros.autor}">Autor</th>
             <th th:text="#{libros.categoria}">Categoría</th>
             <th th:text="#{libros.copias}">Copias</th>
-            <th th:text="#{libros.acciones}">Acciones</th>
+            <th sec:authorize="hasRole('ADMIN')" th:text="#{libros.acciones}">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -36,10 +40,11 @@
             <td th:text="${libro.autor}"></td>
             <td th:text="${libro.categoria}"></td>
             <td th:text="${libro.copias}"></td>
-            <td>
-                <!-- Mostrar solo si el usuario está autenticado -->
-                <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/editar/{id}(id=${libro.id})}" th:text="#{libros.btn.editar}">Editar</a>
-                <a sec:authorize="hasRole('ADMIN')" th:href="@{/libros/eliminar/{id}(id=${libro.id})}" th:text="#{libros.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+            <!-- Mostrar solo si el usuario está autenticado -->
+            <td sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/libros/editar/{id}(id=${libro.id})}" th:text="#{libros.btn.editar}">Editar</a>
+                <a th:if="${puedeEliminarse[libro.id]}" th:href="@{/libros/eliminar/{id}(id=${libro.id})}" th:text="#{libros.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                <span th:unless="${puedeEliminarse[libro.id]}" class="btn-deshabilitado" th:text="#{libros.btn.eliminar}">Eliminar</span>
             </td>
         </tr>
         </tbody>
