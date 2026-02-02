@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * y el uso de un {@link UserDetailsService} personalizado.
  *
  *  @author Tatiana Cerezo
- *  @version 1.1
+ *  @version 1.2
  *
  */
 @Configuration
@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/login/**", "/legal", "/privacidad", "/registro/**").permitAll()
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers("/usuarios/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

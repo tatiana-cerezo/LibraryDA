@@ -4,6 +4,8 @@ import org.example.biblioteca.model.Rol;
 import org.example.biblioteca.model.Usuario;
 import org.example.biblioteca.service.EmailService;
 import org.example.biblioteca.service.UsuarioService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.SecureRandom;
+import java.util.Optional;
 
 /**
  * Controlador para el registro de nuevos usuarios.
@@ -45,14 +48,25 @@ public class RegistroController {
     }
 
     /**
-     * Muestra el formulario de registro de usuarios
+     * Muestra el formulario de registro de usuarios.
+     * Si hay usuario autenticado se verifica que tenga rol ADMIN.
      *
      * @param model modelo para la vista
+     * @param userDetails usuario autenticado en la sesión (puede ser null)
      * @return vista de listado de usuarios
      */
     @GetMapping
-    public String mostrarFormulario(Model model) {
+    public String mostrarFormulario(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("usuario", new Usuario());
+
+        boolean esAdmin = false;
+        if (userDetails != null) {
+            Optional<Usuario> usuarioActual = usuarioService.findByEmail(userDetails.getUsername());
+            esAdmin = usuarioActual.isPresent() && usuarioActual.get().getRol().name().equals("ADMIN");
+        }
+        model.addAttribute("esAdmin", esAdmin);
+        model.addAttribute("roles", Rol.values());
+
         return "registro/formulario";
     }
 
@@ -62,12 +76,16 @@ public class RegistroController {
      *
      * @param nombre nombre del usuario
      * @param email correo electrónico del usuario
+     * @param rol rol del usuario
+     * @param userDetails usuario autenticado en la sesión (puede ser null)
      * @param redirectAttributes atributos para mensajes flash
      * @return redirección al registro si hay error y a login si tiene éxito
      */
     @PostMapping
     public String registrar(@RequestParam String nombre,
                             @RequestParam String email,
+                            @RequestParam(required = false) Rol rol,
+                            @AuthenticationPrincipal UserDetails userDetails,
                             RedirectAttributes redirectAttributes) {
 
         if (usuarioService.existsByEmail(email)) {
@@ -81,13 +99,26 @@ public class RegistroController {
         usuario.setNombre(nombre);
         usuario.setEmail(email);
         usuario.setPassword(passwordEncoder.encode(passwordGenerada));
-        usuario.setRol(Rol.USER);
+
+        boolean esAdmin = false;
+        if (userDetails != null) {
+            Optional<Usuario> usuarioActual = usuarioService.findByEmail(userDetails.getUsername());
+            esAdmin = usuarioActual.isPresent() && usuarioActual.get().getRol().name().equals("ADMIN");
+        }
+
+        if (esAdmin && rol != null) {
+            usuario.setRol(rol);
+        } else {
+            usuario.setRol(Rol.USER);
+        }
 
         usuarioService.save(usuario);
-
         emailService.enviarPassword(email, passwordGenerada);
 
         redirectAttributes.addFlashAttribute("mensaje", "registro.exito");
+        if (esAdmin) {
+            return "redirect:/usuarios";
+        }
         return "redirect:/login";
     }
 

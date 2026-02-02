@@ -9,8 +9,8 @@
         <a href="/libros" th:text="#{nav.libros}">Libros</a>
         <a href="/prestamos" th:text="#{nav.prestamos}">Préstamos</a>
     </span>
-    <!-- Mostrar solo si el usuario tiene el rol ADMIN -->
     <a sec:authorize="hasRole('ADMIN')" href="/usuarios" th:text="#{nav.usuarios}">Usuarios</a>
+    <a sec:authorize="hasRole('USER')" href="/usuarios" th:text="#{usuarios.mi.perfil}">Mi perfil</a>
     <span sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post" style="display: inline;">
             <button type="submit" th:text="#{nav.logout}" style="background: none; border: none; color: white; cursor: pointer; font-size: 1rem;">Cerrar Sesión</button>

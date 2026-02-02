@@ -28,8 +28,16 @@
         <label th:text="#{usuarios.email}">Email:</label>
         <input type="email" name="email" required>
 
-        <button type="submit" th:text="#{nav.registro}">Registrarse</button>
-        <a href="/" th:text="#{prestamos.btn.cancelar}">Cancelar</a>
+        <th:block th:if="${esAdmin}">
+            <label th:text="#{usuarios.rol}">Rol:</label>
+            <select name="rol" required>
+                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+            </select>
+        </th:block>
+
+        <button th:unless="${esAdmin}" type="submit" th:text="#{nav.registro}">Registrarse</button>
+        <button th:if="${esAdmin}" type="submit" th:text="#{usuarios.btn.guardar}">Guardar</button>
+        <a th:href="${esAdmin} ? '/usuarios' : '/'" th:text="#{prestamos.btn.cancelar}">Cancelar</a>
     </form>
 </main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>

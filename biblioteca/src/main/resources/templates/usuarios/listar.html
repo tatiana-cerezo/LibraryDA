@@ -9,12 +9,12 @@
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1 th:text="#{usuarios.titulo}">Listado de Usuarios</h1>
+    <h1 th:text="${esAdmin} ? #{usuarios.titulo} : #{usuarios.mi.perfil}">Listado de Usuarios</h1>
 
     <div th:if="${mensaje}" class="mensaje-exito" th:text="#{__${mensaje}__}"></div>
     <div th:if="${error}" class="mensaje-error" th:text="#{__${error}__}"></div>
 
-    <a th:href="@{/usuarios/nuevo}" th:text="#{usuarios.nuevo}">Nuevo Usuario</a>
+    <a th:if="${esAdmin}" th:href="@{/registro}" th:text="#{usuarios.nuevo}">Nuevo Usuario</a>
 
     <table>
         <thead>
@@ -23,7 +23,7 @@
             <th th:text="#{usuarios.nombre}">Nombre</th>
             <th th:text="#{usuarios.email}">Email</th>
             <th th:text="#{usuarios.rol}">Rol</th>
-            <th sec:authorize="hasRole('ADMIN')" th:text="#{usuarios.acciones}">Acciones</th>
+            <th th:text="#{usuarios.acciones}">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -32,9 +32,10 @@
             <td th:text="${usuario.nombre}"></td>
             <td th:text="${usuario.email}"></td>
             <td th:text="${usuario.rol}"></td>
-            <td sec:authorize="hasRole('ADMIN')">
+            <td>
                 <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}" th:text="#{usuarios.btn.editar}">Editar</a>
-                <a th:href="@{/usuarios/eliminar/{id}(id=${usuario.id})}" th:text="#{usuarios.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                <a th:if="${puedeEliminarse[usuario.id]}" th:href="@{/usuarios/eliminar/{id}(id=${usuario.id})}" th:text="#{usuarios.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
+                <span th:unless="${puedeEliminarse[usuario.id]}" class="btn-deshabilitado" th:text="#{usuarios.btn.eliminar}">Eliminar</span>
             </td>
         </tr>
         </tbody>
