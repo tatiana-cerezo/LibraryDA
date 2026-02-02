@@ -2,12 +2,17 @@ package org.example.biblioteca.controller;
 
 import org.example.biblioteca.model.Rol;
 import org.example.biblioteca.model.Usuario;
+import org.example.biblioteca.repository.PrestamoRepository;
 import org.example.biblioteca.service.UsuarioService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -17,7 +22,7 @@ import java.util.Optional;
  * edición y eliminación de usuarios.
  *
  *  @author Tatiana Cerezo
- *  @version 1.0
+ *  @version 1.1
  */
 @Controller
 @RequestMapping("/usuarios")
@@ -27,27 +32,39 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     /** Codificador de contraseñas para el almacenamiento seguro */
     private final PasswordEncoder passwordEncoder;
+    /** Repositorio para el acceso y persistencia de préstamos */
+    private final PrestamoRepository prestamoRepository;
 
     /**
      * Constructor con inyección de dependencias.
      *
      * @param usuarioService servicio de usuarios
      * @param passwordEncoder codificador de contraseñas
+     * @param prestamoRepository repositorio de préstamos
      */
-    public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
+    public UsuarioController(UsuarioService usuarioService, PasswordEncoder passwordEncoder, PrestamoRepository prestamoRepository) {
         this.usuarioService = usuarioService;
         this.passwordEncoder = passwordEncoder;
+        this.prestamoRepository = prestamoRepository;
     }
 
     /**
-     * Muestra el listado de usuarios.
+     * Muestra el listado de usuarios y
+     * mapa que recoge cuáles pueden eliminarse y cuáles no.
      *
      * @param model modelo para la vista
      * @return vista de listado de usuarios
      */
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("usuarios", usuarioService.findAll());
+        List<Usuario> usuarios = usuarioService.findAll();
+        model.addAttribute("usuarios", usuarios);
+
+        Map<Long, Boolean> puedeEliminarse = new HashMap<>();
+        for (Usuario usuario : usuarios) {
+            puedeEliminarse.put(usuario.getId(), usuarioService.puedeEliminarse(usuario.getId()));
+        }
+        model.addAttribute("puedeEliminarse", puedeEliminarse);
         return "usuarios/listar";
     }
 
@@ -98,14 +115,20 @@ public class UsuarioController {
     }
 
     /**
-     * Elimina un usuario por su identificador.
+     * Elimina un usuario por su si es posible.
+     * Envía mensaje con el resultado.
      *
      * @param id identificador del usuario
+     * @param redirectAttributes atributos para mensajes flash
      * @return redirección al listado de usuarios
      */
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id) {
-        usuarioService.deleteById(id);
+    public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        if (usuarioService.eliminarConPrestamos(id, prestamoRepository)) {
+            redirectAttributes.addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "No se puede eliminar el usuario porque tiene préstamos activos o vencidos");
+        }
         return "redirect:/usuarios";
     }
 }

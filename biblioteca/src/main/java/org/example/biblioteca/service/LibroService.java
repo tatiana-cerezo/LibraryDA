@@ -2,6 +2,7 @@ package org.example.biblioteca.service;
 
 import org.example.biblioteca.model.EstadoPrestamo;
 import org.example.biblioteca.model.Libro;
+import org.example.biblioteca.model.Prestamo;
 import org.example.biblioteca.repository.LibroRepository;
 import org.example.biblioteca.repository.PrestamoRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.Optional;
  * de libros en función de los préstamos activos.
  *
  *  @author Tatiana Cerezo
- *  @version 1.0
+ *  @version 1.1
  */
 @Service
 public class LibroService {
@@ -132,5 +133,38 @@ public class LibroService {
         return todos.stream()
                 .filter(libro -> getDisponibles(libro.getId()) > 0)
                 .toList();
+    }
+
+    /**
+     * Verifica si un libro puede ser eliminado.
+     * Solo puede eliminarse si no tiene préstamos activos o vencidos.
+     *
+     * @param libroId ID del libro
+     * @return true si puede eliminarse
+     */
+    public boolean puedeEliminarse(Long libroId) {
+        List<Prestamo> prestamosActivos = prestamoRepository.findByLibroIdAndEstado(libroId, EstadoPrestamo.ACTIVO);
+        List<Prestamo> prestamosVencidos = prestamoRepository.findByLibroIdAndEstado(libroId, EstadoPrestamo.VENCIDO);
+        return prestamosActivos.isEmpty() && prestamosVencidos.isEmpty();
+    }
+
+    /**
+     * Elimina un libro y sus préstamos devueltos asociados.
+     *
+     * @param id ID del libro a eliminar
+     * @return true si se eliminó correctamente
+     */
+    public boolean eliminarConPrestamos(Long id) {
+        if (!puedeEliminarse(id)) {
+            return false;
+        }
+
+        List<Prestamo> prestamosDevueltos = prestamoRepository.findByLibroIdAndEstado(id, EstadoPrestamo.DEVUELTO);
+        for (Prestamo p : prestamosDevueltos) {
+            prestamoRepository.deleteById(p.getId());
+        }
+
+        libroRepository.deleteById(id);
+        return true;
     }
 }

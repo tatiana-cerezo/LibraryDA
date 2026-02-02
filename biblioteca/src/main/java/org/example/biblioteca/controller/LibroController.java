@@ -5,7 +5,11 @@ import org.example.biblioteca.service.LibroService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -15,7 +19,7 @@ import java.util.Optional;
  * edición, eliminación y búsqueda de libros.
  *
  *  @author Tatiana Cerezo
- *  @version 1.0
+ *  @version 1.1
  */
 @Controller
 @RequestMapping("/libros")
@@ -34,14 +38,22 @@ public class LibroController {
     }
 
     /**
-     * Muestra el listado de libros.
+     * Muestra el listado de libros y
+     * mapa que recoge cuáles pueden eliminarse y cuáles no.
      *
      * @param model modelo para la vista
      * @return vista de listado de libros
      */
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("libros", libroService.findAll());
+        List<Libro> libros = libroService.findAll();
+        model.addAttribute("libros", libros);
+
+        Map<Long, Boolean> puedeEliminarse = new HashMap<>();
+        for (Libro libro : libros) {
+            puedeEliminarse.put(libro.getId(), libroService.puedeEliminarse(libro.getId()));
+        }
+        model.addAttribute("puedeEliminarse", puedeEliminarse);
         return "libros/listar";
     }
 
@@ -87,14 +99,20 @@ public class LibroController {
     }
 
     /**
-     * Elimina un libro por su identificador.
+     * Elimina un libro por su identificador si es posible.
+     * Envía mensaje con el resultado.
      *
      * @param id identificador del libro
+     * @param redirectAttributes atributos para mensajes flash
      * @return redirección al listado de libros
      */
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id) {
-        libroService.deleteById(id);
+    public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        if (libroService.eliminarConPrestamos(id)) {
+            redirectAttributes.addFlashAttribute("mensaje", "Libro eliminado correctamente");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "No se puede eliminar el libro porque tiene préstamos activos o vencidos");
+        }
         return "redirect:/libros";
     }
 

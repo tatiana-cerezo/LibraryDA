@@ -1,6 +1,8 @@
 package org.example.biblioteca.controller;
 
+import org.example.biblioteca.model.EstadoPrestamo;
 import org.example.biblioteca.model.Libro;
+import org.example.biblioteca.model.Prestamo;
 import org.example.biblioteca.model.Usuario;
 import org.example.biblioteca.service.LibroService;
 import org.example.biblioteca.service.PrestamoService;
@@ -23,7 +25,7 @@ import java.util.Optional;
  * edición y eliminación de préstamos.
  *
  *  @author Tatiana Cerezo
- *  @version 1.2
+ *  @version 1.3
  */
 @Controller
 @RequestMapping("/prestamos")
@@ -174,14 +176,22 @@ public class PrestamoController {
     }
 
     /**
-     * Elimina un préstamo por su identificador.
+     * Elimina un préstamo por su identificador solo si está DEVUELTO.
+     * Envía mensaje mostrando resultado.
      *
      * @param id identificador del préstamo
      * @return redirección al listado de préstamos
      */
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Long id) {
-        prestamoService.deleteById(id);
+    public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Optional<Prestamo> prestamo = prestamoService.findById(id);
+        if (prestamo.isPresent() && prestamo.get().getEstado() == EstadoPrestamo.DEVUELTO) {
+            prestamoService.deleteById(id);
+            redirectAttributes.addFlashAttribute("mensaje", "Préstamo eliminado correctamente");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Solo se pueden eliminar préstamos devueltos");
+        }
+
         return "redirect:/prestamos";
     }
 }
