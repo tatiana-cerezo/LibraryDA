@@ -2,6 +2,7 @@ package org.example.biblioteca.controller;
 
 import org.example.biblioteca.model.Rol;
 import org.example.biblioteca.model.Usuario;
+import org.example.biblioteca.service.EmailService;
 import org.example.biblioteca.service.UsuarioService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ import java.security.SecureRandom;
  * Controlador para el registro de nuevos usuarios.
  *
  * @author Tatiana Cerezo
- * @version 1.0
+ * @version 1.1
  */
 @Controller
 @RequestMapping("/registro")
@@ -28,6 +29,8 @@ public class RegistroController {
     private final UsuarioService usuarioService;
     /** Codificador de contraseñas para el almacenamiento seguro */
     private final PasswordEncoder passwordEncoder;
+    /** Servicio para el envío de correos electrónicos */
+    private final EmailService emailService;
 
     /**
      * Constructor con inyección de dependencias.
@@ -35,9 +38,10 @@ public class RegistroController {
      * @param usuarioService servicio de usuarios
      * @param passwordEncoder codificador de contraseñas
      */
-    public RegistroController(UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
+    public RegistroController(UsuarioService usuarioService, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.usuarioService = usuarioService;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     /**
@@ -81,8 +85,7 @@ public class RegistroController {
 
         usuarioService.save(usuario);
 
-        // TODO: Enviar email con passwordGenerada
-        System.out.println("Password generada para " + email + ": " + passwordGenerada);
+        emailService.enviarPassword(email, passwordGenerada);
 
         redirectAttributes.addFlashAttribute("mensaje", "registro.exito");
         return "redirect:/login";
