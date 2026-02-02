@@ -125,9 +125,9 @@ public class UsuarioController {
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         if (usuarioService.eliminarConPrestamos(id, prestamoRepository)) {
-            redirectAttributes.addFlashAttribute("mensaje", "Usuario eliminado correctamente");
+            redirectAttributes.addFlashAttribute("mensaje", "usuario.mensaje.eliminado");
         } else {
-            redirectAttributes.addFlashAttribute("error", "No se puede eliminar el usuario porque tiene préstamos activos o vencidos");
+            redirectAttributes.addFlashAttribute("error", "usuario.mensaje.no.eliminado");
         }
         return "redirect:/usuarios";
     }

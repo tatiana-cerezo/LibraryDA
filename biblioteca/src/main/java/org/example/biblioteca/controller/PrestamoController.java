@@ -187,9 +187,9 @@ public class PrestamoController {
         Optional<Prestamo> prestamo = prestamoService.findById(id);
         if (prestamo.isPresent() && prestamo.get().getEstado() == EstadoPrestamo.DEVUELTO) {
             prestamoService.deleteById(id);
-            redirectAttributes.addFlashAttribute("mensaje", "Préstamo eliminado correctamente");
+            redirectAttributes.addFlashAttribute("mensaje", "prestamo.mensaje.eliminado");
         } else {
-            redirectAttributes.addFlashAttribute("error", "Solo se pueden eliminar préstamos devueltos");
+            redirectAttributes.addFlashAttribute("error", "prestamo.mensaje.no.eliminado");
         }
 
         return "redirect:/prestamos";

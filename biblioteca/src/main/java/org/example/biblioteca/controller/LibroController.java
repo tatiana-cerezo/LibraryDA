@@ -109,9 +109,9 @@ public class LibroController {
     @GetMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         if (libroService.eliminarConPrestamos(id)) {
-            redirectAttributes.addFlashAttribute("mensaje", "Libro eliminado correctamente");
+            redirectAttributes.addFlashAttribute("mensaje", "libro.mensaje.eliminado");
         } else {
-            redirectAttributes.addFlashAttribute("error", "No se puede eliminar el libro porque tiene préstamos activos o vencidos");
+            redirectAttributes.addFlashAttribute("error", "libro.mensaje.no.eliminado");
         }
         return "redirect:/libros";
     }

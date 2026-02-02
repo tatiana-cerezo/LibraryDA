@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,9 @@
 <main>
     <h1 th:text="#{usuarios.titulo}">Listado de Usuarios</h1>
 
+    <div th:if="${mensaje}" class="mensaje-exito" th:text="#{__${mensaje}__}"></div>
+    <div th:if="${error}" class="mensaje-error" th:text="#{__${error}__}"></div>
+
     <a th:href="@{/usuarios/nuevo}" th:text="#{usuarios.nuevo}">Nuevo Usuario</a>
 
     <table>
@@ -20,7 +23,7 @@
             <th th:text="#{usuarios.nombre}">Nombre</th>
             <th th:text="#{usuarios.email}">Email</th>
             <th th:text="#{usuarios.rol}">Rol</th>
-            <th th:text="#{usuarios.acciones}">Acciones</th>
+            <th sec:authorize="hasRole('ADMIN')" th:text="#{usuarios.acciones}">Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -29,7 +32,7 @@
             <td th:text="${usuario.nombre}"></td>
             <td th:text="${usuario.email}"></td>
             <td th:text="${usuario.rol}"></td>
-            <td>
+            <td sec:authorize="hasRole('ADMIN')">
                 <a th:href="@{/usuarios/editar/{id}(id=${usuario.id})}" th:text="#{usuarios.btn.editar}">Editar</a>
                 <a th:href="@{/usuarios/eliminar/{id}(id=${usuario.id})}" th:text="#{usuarios.btn.eliminar}" onclick="return confirm('¿Eliminar?')">Eliminar</a>
             </td>

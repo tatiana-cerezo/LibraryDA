@@ -11,6 +11,9 @@
 <main>
     <h1 th:text="#{prestamos.titulo}">Listado de Préstamos</h1>
 
+    <div th:if="${mensaje}" class="mensaje-exito" th:text="#{__${mensaje}__}"></div>
+    <div th:if="${error}" class="mensaje-error" th:text="#{__${error}__}"></div>
+
     <a th:href="@{/prestamos/nuevo}" th:text="#{prestamos.nuevo}">Nuevo Préstamo</a>
 
     <h2 th:text="#{prestamos.activos}">Préstamos Activos o Vencidos</h2>
