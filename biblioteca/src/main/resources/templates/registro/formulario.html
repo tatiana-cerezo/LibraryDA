@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{registro.titulo}">Registrarse</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav>
+    <a href="/" th:text="#{nav.inicio}">Inicio</a>
+    <a href="/login" th:text="#{nav.login}">Iniciar Sesión</a>
+    <span style="margin-left: 1rem;">
+            <a href="?lang=es">ES</a> |
+            <a href="?lang=en">EN</a>
+        </span>
+</nav>
+<main>
+    <h1 th:text="#{registro.titulo}">Crear Cuenta</h1>
+
+    <div th:if="${mensaje}" class="mensaje-exito" th:text="#{__${mensaje}__}"></div>
+    <div th:if="${error}" class="mensaje-error" th:text="#{__${error}__}"></div>
+
+    <form th:action="@{/registro}" method="post">
+        <label th:text="#{usuarios.nombre}">Nombre:</label>
+        <input type="text" name="nombre" required>
+
+        <label th:text="#{usuarios.email}">Email:</label>
+        <input type="email" name="email" required>
+
+        <th:block th:if="${esAdmin}">
+            <label th:text="#{usuarios.rol}">Rol:</label>
+            <select name="rol" required>
+                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+            </select>
+        </th:block>
+
+        <button th:unless="${esAdmin}" type="submit" th:text="#{nav.registro}">Registrarse</button>
+        <button th:if="${esAdmin}" type="submit" th:text="#{usuarios.btn.guardar}">Guardar</button>
+        <a th:href="${esAdmin} ? '/usuarios' : '/'" th:text="#{prestamos.btn.cancelar}">Cancelar</a>
+    </form>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

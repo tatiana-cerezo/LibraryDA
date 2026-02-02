@@ -15,6 +15,9 @@ import java.util.Locale;
  * <p>
  * Define el locale por defecto y permite cambiar el idioma
  * mediante un parámetro en la URL.
+ *
+ *  @author Tatiana Cerezo
+ *  @version 1.0
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {

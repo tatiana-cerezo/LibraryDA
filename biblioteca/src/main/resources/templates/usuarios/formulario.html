@@ -9,7 +9,7 @@
 <body>
 <nav th:replace="~{fragments/nav :: nav}"></nav>
 <main>
-    <h1 th:text="${usuario.id == null} ? #{usuarios.nuevo} : #{usuarios.editar}"></h1>
+    <h1 th:text="#{usuarios.editar}">Editar Usuario</h1>
 
     <form th:action="@{/usuarios/guardar}" th:object="${usuario}" method="post">
         <input type="hidden" th:field="*{id}">
@@ -20,13 +20,15 @@
         <label th:text="#{usuarios.email}">Email:</label>
         <input type="email" th:field="*{email}" required>
 
-        <label th:text="#{usuarios.password}">Contraseña:</label>
-        <input type="password" th:field="*{password}" th:required="${usuario.id == null}">
+        <label th:text="#{usuarios.password}">Contraseña (dejar vacío para mantener):</label>
+        <input type="password" th:field="*{password}">
 
-        <label th:text="#{usuarios.rol}">Rol:</label>
-        <select th:field="*{rol}" required>
-            <option th:each="rol : ${roles}" th:value="${rol}" th:text="${rol}"></option>
-        </select>
+        <th:block th:if="${esAdmin}">
+            <label th:text="#{usuarios.rol}">Rol:</label>
+            <select th:field="*{rol}" required>
+                <option th:each="r : ${roles}" th:value="${r}" th:text="${r}"></option>
+            </select>
+        </th:block>
 
         <button type="submit" th:text="#{usuarios.btn.guardar}">Guardar</button>
         <a href="/usuarios" th:text="#{usuarios.btn.cancelar}">Cancelar</a>
