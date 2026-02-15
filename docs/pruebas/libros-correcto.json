@@ -1,0 +1,22 @@
+[
+  {
+    "titulo": "El Principito",
+    "autor": "Antoine de Saint-Exupéry",
+    "editorial": "Salamandra",
+    "anioPublicacion": 1943,
+    "categoria": "Ficción",
+    "copias": 5
+  },
+  {
+    "titulo": "Cien años de soledad",
+    "autor": "Gabriel García Márquez",
+    "copias": 3
+  },
+  {
+    "titulo": "1984",
+    "autor": "George Orwell",
+    "editorial": "Debolsillo",
+    "anioPublicacion": 1949,
+    "copias": 2
+  }
+]

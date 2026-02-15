@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lista de Libros",
+  "description": "Schema para importar/exportar libros. Los campos opcionales pueden omitirse o ser null (ambos equivalen a 'sin valor').",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "titulo": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Título del libro (obligatorio)"
+      },
+      "autor": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Autor del libro (obligatorio)"
+      },
+      "editorial": {
+        "type": ["string", "null"],
+        "description": "Editorial (opcional, puede omitirse o ser null)"
+      },
+      "anioPublicacion": {
+        "type": ["integer", "null"],
+        "description": "Año de publicación (opcional, puede omitirse o ser null)"
+      },
+      "categoria": {
+        "type": ["string", "null"],
+        "description": "Categoría del libro (opcional, puede omitirse o ser null)"
+      },
+      "copias": {
+        "type": "integer",
+        "minimum": 1,
+        "description": "Número de copias disponibles (obligatorio, mínimo 1)"
+      }
+    },
+    "required": ["titulo", "autor", "copias"],
+    "additionalProperties": false
+  }
+}

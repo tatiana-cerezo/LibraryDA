@@ -1,12 +1,20 @@
 package org.example.biblioteca.controller;
 
 import org.example.biblioteca.model.Libro;
+import org.example.biblioteca.service.ExportService;
+import org.example.biblioteca.service.ImportService;
 import org.example.biblioteca.service.LibroService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +27,7 @@ import java.util.Optional;
  * edición, eliminación y búsqueda de libros.
  *
  *  @author Tatiana Cerezo
- *  @version 1.1
+ *  @version 1.2
  */
 @Controller
 @RequestMapping("/libros")
@@ -27,14 +35,22 @@ public class LibroController {
 
     /** Servicio de negocio para la gestión de libros */
     private final LibroService libroService;
+    /** Servicio de negocio para la gestión de exportar libros */
+    private final ExportService exportService;
+    /** Servicio de negocio para la gestión de importar libros */
+    private final ImportService importService;
 
     /**
      * Constructor con inyección de dependencias.
      *
      * @param libroService servicio de libros
+     * @param exportService servicio de exportación
+     * @param importService servicio de importación
      */
-    public LibroController(LibroService libroService) {
+    public LibroController(LibroService libroService,  ExportService exportService, ImportService importService) {
         this.libroService = libroService;
+        this.exportService = exportService;
+        this.importService = importService;
     }
 
     /**
@@ -127,5 +143,51 @@ public class LibroController {
     public String buscar(@RequestParam String titulo, Model model) {
         model.addAttribute("libros", libroService.findByTitulo(titulo));
         return "libros/listar";
+    }
+
+    /**
+     * Exporta todos los libros a un archivo JSON descargable.
+     *
+     * @return archivo JSON con todos los libros
+     */
+    @GetMapping("/exportar")
+    public ResponseEntity<byte[]> exportar() {
+        try {
+            String json = exportService.exportarLibros();
+            byte[] contenido = json.getBytes(StandardCharsets.UTF_8);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setContentDispositionFormData("attachment", "libros.json");
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(contenido);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * Importa libros desde un archivo JSON.
+     * El archivo debe cumplir con el schema definido en libros-schema.json.
+     *
+     * @param archivo archivo JSON con los libros a importar
+     * @param redirectAttributes atributos para mensajes flash
+     * @return redirección a la lista de libros
+     */
+    @PostMapping("/importar")
+    public String importar(@RequestParam("archivo") MultipartFile archivo, RedirectAttributes redirectAttributes) {
+        try {
+            String json = new String(archivo.getBytes(), StandardCharsets.UTF_8);
+            int cantidad = importService.importarLibros(json);
+            redirectAttributes.addFlashAttribute("mensaj", "libros.importados");
+            redirectAttributes.addFlashAttribute("cantidad", cantidad);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", "libros.import.error.validacion");
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("error", "libros.import.error.lectura");
+        }
+        return "redirect:/libros";
     }
 }
