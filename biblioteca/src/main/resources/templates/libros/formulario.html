@@ -24,7 +24,7 @@
         <input type="text" th:field="*{editorial}">
 
         <label th:text="#{libros.anio}">Año de Publicación:</label>
-        <input type="number" th:field="*{anioPublicacion}">
+        <input type="text" th:field="*{anioPublicacion}" pattern="(19[0-9]{2}|200[0-9]|201[0-9]|202[0-6])" maxlength="4" placeholder="Ej: 1900 a 2026">
 
         <label th:text="#{libros.categoria}">Categoría:</label>
         <input type="text" th:field="*{categoria}">

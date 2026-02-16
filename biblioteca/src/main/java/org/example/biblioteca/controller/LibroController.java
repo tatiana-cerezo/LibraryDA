@@ -92,7 +92,13 @@ public class LibroController {
      * @return redirección al listado de libros
      */
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute Libro libro) {
+    public String guardar(@ModelAttribute Libro libro, RedirectAttributes redirectAttributes) {
+        if (libro.getAnioPublicacion() != null &&
+                (libro.getAnioPublicacion() < 1900 || libro.getAnioPublicacion() > 2026)) {
+            redirectAttributes.addFlashAttribute("error", "libros.anio.invalido");
+            return "redirect:/libros/nuevo";
+        }
+
         libroService.save(libro);
         return "redirect:/libros";
     }
