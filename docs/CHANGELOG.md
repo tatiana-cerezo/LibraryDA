@@ -46,3 +46,26 @@
 
 ### Autor:
 - Tatiana Cerezo
+
+
+## Versión 2.0.0
+
+### Fecha: 2025-02-16
+
+### Cambios Realizados:
+- Separación de préstamos en tablas: activos/vencidos y devueltos.
+- Préstamos activos del usuario mostrados en página de inicio.
+- Buscador de libros en formulario de nuevo préstamo.
+- Control de eliminación: libros, usuarios y préstamos con validaciones.
+- Sistema de registro de usuarios con envío de contraseña por email.
+- Usuario USER puede ver y editar su perfil.
+- Usuario USER puede eliminarse a sí mismo.
+- Exportación de libros a JSON.
+- Importación de libros desde JSON con validación de schema.
+- Validación de año de publicación (1900-2026).
+- Mejoras visuales en formularios e inputs.
+- Documentación completa: README, API_ENDPOINTS, resumen del proyecto.
+- Tests unitarios para servicios y controladores.
+
+### Autor:
+- Tatiana Cerezo
