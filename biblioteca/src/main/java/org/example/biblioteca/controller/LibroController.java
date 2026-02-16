@@ -141,6 +141,9 @@ public class LibroController {
      */
     @GetMapping("/buscar")
     public String buscar(@RequestParam String titulo, Model model) {
+        if (titulo == null || titulo.trim().isEmpty()) {
+            return "redirect:/libros";
+        }
         model.addAttribute("libros", libroService.findByTitulo(titulo));
         return "libros/listar";
     }
